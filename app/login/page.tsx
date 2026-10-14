@@ -36,7 +36,7 @@ export default function LoginPage() {
     setGuestLoading(true);
     setError("");
 
-    const res = await signIn("credentials", {
+    const res = await signIn("guest", {
       redirect: false,
       callbackUrl: "/dashboard",
     });
@@ -59,7 +59,6 @@ export default function LoginPage() {
         <div className="mb-8 flex justify-center">
           <Brand />
         </div>
-
         {/* Heading */}
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold text-white">Welcome to FlowLedger</h1>
