@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+import { db } from "@/lib/db";
 import { authOptions } from "@/auth";
 import { getServerSession } from "next-auth";
 import { z } from "zod";
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await db.user.findUnique({
       where: { email: session.user.email },
       select: { id: true },
     });
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const data = transactionSchema.parse(body);
 
-    const category = await prisma.category.findFirst({
+    const category = await db.category.findFirst({
       where: {
         id: data.categoryId,
         userId: user.id,
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const transaction = await prisma.transaction.create({
+    const transaction = await db.transaction.create({
       data: {
         title: data.title,
         amount: data.amount,

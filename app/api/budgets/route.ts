@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+import { db } from "@/lib/db";
 import { authOptions } from "@/auth";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
@@ -18,12 +18,12 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const user = await prisma.user.findUnique({
+  const user = await db.user.findUnique({
     where: { email: session.user.email },
     select: { id: true },
   });
 
-  const budgets = await prisma.budget.findMany({
+  const budgets = await db.budget.findMany({
     where: { userId: user!.id },
     include: { category: true },
     orderBy: { category: { name: "asc" } },
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const user = await prisma.user.findUnique({
+  const user = await db.user.findUnique({
     where: { email: session.user.email },
     select: { id: true },
   });
@@ -47,7 +47,7 @@ export async function POST(req: Request) {
   const body = await req.json();
   const data = budgetSchema.parse(body);
 
-  const budget = await prisma.budget.upsert({
+  const budget = await db.budget.upsert({
     where: {
       userId_categoryId_month_year: {
         userId: user!.id,

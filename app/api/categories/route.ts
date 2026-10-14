@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+import { db } from "@/lib/db";
 import { authOptions } from "@/auth";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
@@ -13,7 +13,7 @@ export async function GET() {
     );
   }
 
-  const user = await prisma.user.findUnique({
+  const user = await db.user.findUnique({
     where: { email: session.user.email },
     select: { id: true },
   });
@@ -25,7 +25,7 @@ export async function GET() {
     );
   }
 
-  const categories = await prisma.category.findMany({
+  const categories = await db.category.findMany({
     where: {
       userId: user.id,
     },

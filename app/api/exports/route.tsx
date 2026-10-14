@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+import { db } from "@/lib/db";
 import { authOptions } from "@/auth";
 import { getServerSession } from "next-auth";
 
@@ -9,7 +9,7 @@ export async function GET() {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const user = await prisma.user.findUnique({
+  const user = await db.user.findUnique({
     where: { email: session.user.email },
     select: { id: true },
   });
@@ -18,7 +18,7 @@ export async function GET() {
     return new Response("User not found", { status: 404 });
   }
 
-  const transactions = await prisma.transaction.findMany({
+  const transactions = await db.transaction.findMany({
     where: { userId: user.id },
     include: { category: true },
     orderBy: { date: "desc" },
