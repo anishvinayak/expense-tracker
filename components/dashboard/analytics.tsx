@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/db";
 import PieChartCard from "./pie-chart-card";
 import MonthlyChartCard from "./monthly-chart-card";
 

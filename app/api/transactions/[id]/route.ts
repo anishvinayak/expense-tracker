@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { db } from "@/lib/db";
 import { authOptions } from "@/auth";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
@@ -18,7 +18,7 @@ async function getUserId() {
 
   if (!session?.user?.email) return null;
 
-  const user = await prisma.user.findUnique({
+  const user = await db.user.findUnique({
     where: { email: session.user.email },
     select: { id: true },
   });
@@ -38,7 +38,7 @@ export async function PATCH(
 
   const { id } = await params;
 
-  const existing = await prisma.transaction.findFirst({
+  const existing = await db.transaction.findFirst({
     where: { id, userId },
   });
 
@@ -52,7 +52,7 @@ export async function PATCH(
   const body = await req.json();
   const data = updateSchema.parse(body);
 
-  const transaction = await prisma.transaction.update({
+  const transaction = await db.transaction.update({
     where: { id },
     data: {
       title: data.title,
@@ -79,7 +79,7 @@ export async function DELETE(
 
   const { id } = await params;
 
-  const existing = await prisma.transaction.findFirst({
+  const existing = await db.transaction.findFirst({
     where: { id, userId },
   });
 
@@ -90,7 +90,7 @@ export async function DELETE(
     );
   }
 
-  await prisma.transaction.delete({
+  await db.transaction.delete({
     where: { id },
   });
 

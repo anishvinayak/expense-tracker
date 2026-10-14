@@ -3,7 +3,7 @@ import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { prisma } from "@/lib/prisma";
+import { db } from "@/lib/db";
 
 
 export const authOptions: NextAuthOptions = {
@@ -44,7 +44,7 @@ export const authOptions: NextAuthOptions = {
 
         const email = credentials.email.toLowerCase().trim();
 
-        const user = await prisma.user.findUnique({
+        const user = await db.user.findUnique({
           where: { email },
         });
 
@@ -80,7 +80,7 @@ CredentialsProvider({
     console.log("[Guest] authorize() called");
 
     try {
-      const user = await prisma.user.findUnique({
+      const user = await db.user.findUnique({
         where: {
           email: "demo@flowledger.app",
         },

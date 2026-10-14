@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 import { authOptions } from "@/auth";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/db";
 
 import DashboardContent from "@/components/dashboard/dashboard-content";
 import Brand from "@/components/brand";
