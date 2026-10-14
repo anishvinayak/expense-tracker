@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 import { authOptions } from "@/auth";
-import { prisma } from "@/lib/db";
+import { db } from "@/lib/db";
 
 import DashboardContent from "@/components/dashboard/dashboard-content";
 import Brand from "@/components/brand";
@@ -15,7 +15,7 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  const user = await prisma.user.findUnique({
+  const user = await db.user.findUnique({
     where: {
       email: session.user.email,
     },

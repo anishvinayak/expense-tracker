@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+import { db } from "@/lib/db";
 import PieChartCard from "./pie-chart-card";
 import MonthlyChartCard from "./monthly-chart-card";
 
@@ -7,7 +7,7 @@ export default async function Analytics({
 }: {
   userId: string;
 }) {
-  const transactions = await prisma.transaction.findMany({
+  const transactions = await db.transaction.findMany({
     where: { userId },
     include: { category: true },
   });
